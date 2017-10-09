@@ -10,7 +10,14 @@ public class Bar : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+    {
+        //このオブジェクトをタッチしている場合
+        if(TouchManager.I.result.state == TouchState.Touched&&TouchManager.I.GetHitGameObject == gameObject)
+        {
+            transform.Translate(new Vector3(-TouchManager.I.MoveDirection.x*0.1f,0,0));
+
+        }
 		
 	}
 }
