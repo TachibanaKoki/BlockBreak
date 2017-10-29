@@ -80,12 +80,21 @@ public class GameManager : MonoBehaviour
 
     void TimeController()
     {
-        time -= Time.unscaledDeltaTime;
+        time -= Time.deltaTime;
         //ゲームオーバー
         if (time < 0.0f)
         {
             time = 0.0f;
             GameOver();
+        }
+
+        if(TouchManager.I.IsTouchStart())
+        {
+            Time.timeScale = 0.1f;
+        }
+        else if(TouchManager.I.IsTouchEnd())
+        {
+            Time.timeScale = 1.0f;
         }
     }
 

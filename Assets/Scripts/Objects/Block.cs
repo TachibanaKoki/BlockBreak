@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Block : MonoBehaviour
 {
-    
+    public float HP = 1;
 
 
 	// Use this for initialization
@@ -23,7 +23,18 @@ public class Block : MonoBehaviour
     {
         if(col.transform.tag == "Ball")
         {
+            HP--;
+        }
+
+        if(col.transform.tag == "EndLine")
+        {
             Destroy(gameObject);
+            EffectManager.I.BlockExprosion(transform.position);
+        }
+        else if(HP<=0)
+        {
+            Destroy(gameObject);
+            EffectManager.I.BlockExprosion(transform.position);
         }
     }
 }
