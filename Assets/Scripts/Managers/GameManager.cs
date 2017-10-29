@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 
 public enum GameState
 {
@@ -14,7 +15,7 @@ public class GameManager : MonoBehaviour
     public static GameManager I;
 
     [SerializeField]
-    float m_TimeLimit = 30;
+    float m_TimeLimit = 300;
 
     [SerializeField]
     Text m_timeText;
@@ -23,11 +24,22 @@ public class GameManager : MonoBehaviour
 
     float time = 0;
 
+    public UnityAction Initialize;
 
+    private void Awake()
+    {
+        I = this;
+    }
     // Use this for initialization
     void Start()
     {
-        I = this;
+        time = m_TimeLimit;
+        state = GameState.Start;
+        Initialize += Init;
+    }
+
+    private void Init()
+    {
         time = m_TimeLimit;
         state = GameState.Start;
     }
@@ -61,6 +73,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void GameOver()
+    {
+        state = GameState.Result;
+    }
+
     void TimeController()
     {
         time -= Time.unscaledDeltaTime;
@@ -68,7 +85,7 @@ public class GameManager : MonoBehaviour
         if (time < 0.0f)
         {
             time = 0.0f;
-            state = GameState.Result;
+            GameOver();
         }
     }
 
@@ -76,8 +93,7 @@ public class GameManager : MonoBehaviour
     {
         if (TouchManager.I.IsTouchStart())
         {
-            time = m_TimeLimit;
-            state = GameState.Start;
+            Initialize();
         }
     }
 
