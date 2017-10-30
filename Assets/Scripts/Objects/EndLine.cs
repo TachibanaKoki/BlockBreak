@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class EndLine : MonoBehaviour {
 
@@ -42,6 +43,9 @@ public class EndLine : MonoBehaviour {
     {
         //ひとまず何が当たってもダメージ
         HP -= 1;
+
+        Model.transform.DOShakePosition(0.2f,0.1f,30);
+
         if(HP< 0)
         {
             HP = 0;
