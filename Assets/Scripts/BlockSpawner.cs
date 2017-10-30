@@ -9,6 +9,9 @@ public class BlockSpawner : MonoBehaviour {
     [SerializeField]
     float Interval = 3;
 
+    [SerializeField]
+    float resetValue = 0.3f;
+
     float startInterval;
 	// Use this for initialization
 	void Start ()
@@ -39,7 +42,11 @@ public class BlockSpawner : MonoBehaviour {
         {
             yield return new WaitForSeconds(Interval);
             GameObject.Instantiate(m_Block, new Vector3(Random.Range(0,10) - 4.0f,11f,0f), Quaternion.identity);
-            Interval =  Mathf.Max(Interval-0.1f,0.1f);
+            Interval = -0.1f;
+            if(Interval<= resetValue)
+            {
+                Interval = startInterval - resetValue;
+            }
         }
     }
 
