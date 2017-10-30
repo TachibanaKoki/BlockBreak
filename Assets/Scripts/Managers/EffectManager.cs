@@ -9,6 +9,9 @@ public class EffectManager : MonoBehaviour {
     [SerializeField]
     GameObject m_BlockExporsion;
 
+    [SerializeField]
+    GameObject m_ItemGetEffect;
+
 	// Use this for initialization
 	void Awake ()
     {
@@ -18,5 +21,10 @@ public class EffectManager : MonoBehaviour {
     public void BlockExprosion(Vector3 posion)
     {
         GameObject.Instantiate(m_BlockExporsion, posion,Quaternion.identity);
+    }
+
+    public void ItemGetEffect(Vector3 posion)
+    {
+        GameObject.Instantiate(m_ItemGetEffect, posion, Quaternion.identity);
     }
 }

@@ -20,11 +20,16 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     Text m_timeText;
 
+    [SerializeField]
+    Text m_scoreText;
+
     public GameState state;
 
     float time = 0;
 
     public UnityAction Initialize;
+
+    public int m_score;
 
     private void Awake()
     {
@@ -36,6 +41,14 @@ public class GameManager : MonoBehaviour
         time = m_TimeLimit;
         state = GameState.Start;
         Initialize += Init;
+        m_score = 0;
+        m_scoreText.text = "0";
+    }
+
+    public void AddScore(int value = 1)
+    {
+        m_score += value;
+        m_scoreText.text = m_score.ToString();
     }
 
     private void Init()
