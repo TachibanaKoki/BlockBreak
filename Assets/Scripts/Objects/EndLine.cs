@@ -24,7 +24,7 @@ public class EndLine : MonoBehaviour {
         MaxHp = HP;
         mat = Model.GetComponent<Renderer>().material;
         startColor = mat.color;
-        GameManager.I.Initialize += Init;
+        GameRuleManager.I.Initialize += Init;
 	}
 
     private void Init()
@@ -44,12 +44,12 @@ public class EndLine : MonoBehaviour {
         //ひとまず何が当たってもダメージ
         HP -= 1;
 
-        Model.transform.DOShakePosition(0.2f,0.1f,30);
+        Model.transform.DOShakePosition(0.2f,0.1f,30).Restart();
 
         if(HP< 0)
         {
             HP = 0;
-            GameManager.I.GameOver();
+            GameRuleManager.I.GameOver();
         }
     }
 }

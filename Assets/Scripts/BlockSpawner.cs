@@ -17,14 +17,13 @@ public class BlockSpawner : MonoBehaviour {
 	void Start ()
     {
         startInterval = Interval;
-        GameManager.I.Initialize += Init;
+        GameRuleManager.I.Initialize += Init;
         //CollectBlockSpawn();
         Init();
 	}
 
     private void Init()
     {
-        StopAllCoroutines();
         Interval = startInterval;
         StartCoroutine(IntervalBlockSpawn());
     }
@@ -37,11 +36,11 @@ public class BlockSpawner : MonoBehaviour {
 
     public IEnumerator IntervalBlockSpawn()
     {
-        GameObject.Instantiate(m_Block, new Vector3(Random.Range(0, 10) - 4.0f, 11f, 0f), Quaternion.identity);
+        GameObject.Instantiate(m_Block, new Vector3(Random.Range(0, 10) - 4.0f, 11f, 0f), Quaternion.identity,transform);
         while (true)
         {
             yield return new WaitForSeconds(Interval);
-            GameObject.Instantiate(m_Block, new Vector3(Random.Range(0,10) - 4.0f,11f,0f), Quaternion.identity);
+            GameObject.Instantiate(m_Block, new Vector3(Random.Range(0,10) - 4.0f,11f,0f), Quaternion.identity,transform);
             Interval = -0.1f;
             if(Interval<= resetValue)
             {
@@ -56,7 +55,7 @@ public class BlockSpawner : MonoBehaviour {
         {
             if (Random.Range(0, 10) == 0)
             {
-                GameObject.Instantiate(m_Block, new Vector3((i % 10) - 4.0f, (i / 10) - 3.0f, 0), Quaternion.identity);
+                GameObject.Instantiate(m_Block, new Vector3((i % 10) - 4.0f, (i / 10) - 3.0f, 0), Quaternion.identity,transform);
             }
         }
     }

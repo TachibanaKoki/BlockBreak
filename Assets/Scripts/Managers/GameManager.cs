@@ -14,116 +14,46 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager I;
 
-    [SerializeField]
-    float m_TimeLimit = 300;
+    private int m_score;
+    public int Score { get { return m_score; } }
 
-    [SerializeField]
-    Text m_timeText;
+    private int BestScore;
 
-    [SerializeField]
-    Text m_scoreText;
-
-    public GameState state;
-
-    float time = 0;
-
-    public UnityAction Initialize;
-
-    public int m_score;
+    private int coin;
 
     private void Awake()
     {
         I = this;
+        coin = PlayerPrefs.GetInt("Coin");
     }
     // Use this for initialization
     void Start()
     {
-        time = m_TimeLimit;
-        state = GameState.Start;
-        Initialize += Init;
         m_score = 0;
-        m_scoreText.text = "0";
+    }
+
+    //スコアをコインに変換する
+    public void ScoretoCoin()
+    {
+        coin =coin + Score;
+        PlayerPrefs.SetInt("Coin",coin);
+        m_score = 0;
     }
 
     public void AddScore(int value = 1)
     {
         m_score += value;
-        m_scoreText.text = m_score.ToString();
     }
 
-    private void Init()
+    public void TimeController()
     {
-        time = m_TimeLimit;
-        state = GameState.Start;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        switch (state)
-        {
-            case GameState.Start:
-                StartWait();
-                break;
-            case GameState.Playing:
-                TimeController();
-                break;
-            case GameState.Result:
-                Result();
-                break;
-        }
-
-        float val = time - Mathf.Floor(time);
-        val *= 100;
-        val = Mathf.Floor(val);
-        if (val < 10.0f)
-        {
-            m_timeText.text = Mathf.Floor(time).ToString() + ":0" + val;
-        }
-        else
-        {
-            m_timeText.text = Mathf.Floor(time).ToString() + ":" + val;
-        }
-    }
-
-    public void GameOver()
-    {
-        state = GameState.Result;
-    }
-
-    void TimeController()
-    {
-        time -= Time.deltaTime;
-        //ゲームオーバー
-        if (time < 0.0f)
-        {
-            time = 0.0f;
-            GameOver();
-        }
-
-        if(TouchManager.I.IsTouchStart())
+        if (TouchManager.I.IsTouchStart())
         {
             Time.timeScale = 0.1f;
         }
-        else if(TouchManager.I.IsTouchEnd())
+        else if (TouchManager.I.IsTouchEnd())
         {
             Time.timeScale = 1.0f;
-        }
-    }
-
-    void Result()
-    {
-        if (TouchManager.I.IsTouchStart())
-        {
-            Initialize();
-        }
-    }
-
-    void StartWait()
-    {
-        if (TouchManager.I.IsTouchStart())
-        {
-            state = GameState.Playing;
         }
     }
 }
