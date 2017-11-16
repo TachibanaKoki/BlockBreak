@@ -24,14 +24,16 @@ public class BlockSpawner : MonoBehaviour {
 
     private void Init()
     {
+        //StopAllCoroutines();
         Interval = startInterval;
         StartCoroutine(IntervalBlockSpawn());
     }
 	
 	// Update is called once per frame
-	void Update ()
+	void OnDestroy()
     {
-
+        GameRuleManager.I.Initialize -= Init;
+        StopAllCoroutines();
 	}
 
     public IEnumerator IntervalBlockSpawn()
