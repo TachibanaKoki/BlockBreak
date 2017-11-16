@@ -45,6 +45,13 @@ public class GameManager : MonoBehaviour
         m_score += value;
     }
 
+    public void AddCoin(int _coin)
+    {
+        coin = coin + _coin;
+        PlayerPrefs.SetInt("Coin", coin);
+        Debug.Log(_coin+"のコインを取得した");
+    }
+
     public void TimeController()
     {
         if (TouchManager.I.IsTouchStart())
