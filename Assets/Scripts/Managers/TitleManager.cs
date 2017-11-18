@@ -19,7 +19,7 @@ public class TitleManager : MonoBehaviour {
         if (isNext) return;
 		if(TouchManager.I.IsTouchStart())
         {
-            SceneManager.LoadSceneAsync("Main");
+            SceneManager.LoadSceneAsync("Home");
             isNext = true;
         }
 	}

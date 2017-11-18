@@ -90,6 +90,20 @@ public class GameRuleManager : MonoBehaviour
     public void GameOver()
     {
         state = GameState.Result;
+        int score = GameManager.I.Score;
+        Time.timeScale = 1.0f;
+        ResultObject.transform.Find("Score").GetComponent<Text>().text = score.ToString();
+
+        int bestScore = PlayerPrefs.GetInt("BestScore");
+
+        if(bestScore< score)
+        {
+            //ニューレコード
+            bestScore = score;
+            PlayerPrefs.SetInt("BestScore",bestScore);
+        }
+
+        ResultObject.transform.Find("BestScore").GetComponent<Text>().text = bestScore.ToString();
         ResultObject.SetActive(true);
     }
 
@@ -114,6 +128,7 @@ public class GameRuleManager : MonoBehaviour
     public void TitleBack()
     {
         GameManager.I.ScoretoCoin();
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Title");
     }
 
     public void ShowRewardedAd()
