@@ -21,6 +21,15 @@ public class EndLine : MonoBehaviour {
 	// Use this for initialization
 	void Start ()
     {
+        if(PlayerPrefs.HasKey("DEF"))
+        {
+            HP = PlayerPrefs.GetFloat("DEF");
+        }
+        else
+        {
+            PlayerPrefs.SetFloat("DEF",HP);
+        }
+
         MaxHp = HP;
         mat = Model.GetComponent<Renderer>().material;
         startColor = mat.color;

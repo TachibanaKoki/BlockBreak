@@ -24,6 +24,6 @@ public class HomeUI : MonoBehaviour {
 	
     public void PowerUp()
     {
-
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Power-Up");
     }
 }

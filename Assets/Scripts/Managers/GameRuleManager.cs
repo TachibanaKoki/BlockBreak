@@ -89,6 +89,7 @@ public class GameRuleManager : MonoBehaviour
 
     public void GameOver()
     {
+        if (state != GameState.Playing) return;
         state = GameState.Result;
         int score = GameManager.I.Score;
         Time.timeScale = 1.0f;
@@ -102,6 +103,9 @@ public class GameRuleManager : MonoBehaviour
             bestScore = score;
             PlayerPrefs.SetInt("BestScore",bestScore);
         }
+
+        //自機を破壊する
+        Destroy(gameInstance.transform.Find("bullet").gameObject);
 
         ResultObject.transform.Find("BestScore").GetComponent<Text>().text = bestScore.ToString();
         ResultObject.SetActive(true);

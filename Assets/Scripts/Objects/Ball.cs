@@ -10,6 +10,9 @@ public class Ball : MonoBehaviour {
     [SerializeField]
     GameObject arrow;
 
+    public int m_atk = 1;
+    public int m_speed= 1;
+
     Rigidbody2D rigidbody2d;
     Vector3 startPosition;
 
@@ -18,7 +21,25 @@ public class Ball : MonoBehaviour {
     {
         rigidbody2d = GetComponent<Rigidbody2D>();
         arrow.SetActive(false);
-	}
+
+        if (PlayerPrefs.HasKey("ATK"))
+        {
+            m_atk = PlayerPrefs.GetInt("ATK");
+        }
+        else
+        {
+            PlayerPrefs.SetInt("ATK", m_atk);
+        }
+
+        if (PlayerPrefs.HasKey("SPEED"))
+        {
+            m_speed = PlayerPrefs.GetInt("SPEED");
+        }
+        else
+        {
+            PlayerPrefs.SetInt("SPEED", m_speed);
+        }
+    }
 	
 	// Update is called once per frame
 	void Update ()
@@ -40,7 +61,7 @@ public class Ball : MonoBehaviour {
             rigidbody2d.simulated = true;
             Vector3 dir = (startPosition - TouchManager.I.result.position).normalized;
             rigidbody2d.velocity = Vector2.zero;
-            rigidbody2d.AddForce(dir*pow,ForceMode2D.Impulse);
+            rigidbody2d.AddForce(dir*pow* m_speed, ForceMode2D.Impulse);
             arrow.SetActive(false);
         }
         else
