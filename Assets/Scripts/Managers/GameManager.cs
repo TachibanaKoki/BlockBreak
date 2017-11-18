@@ -23,8 +23,30 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        I = this;
-        coin = PlayerPrefs.GetInt("Coin");
+        if (I == null)
+        {
+            DontDestroyOnLoad(gameObject);
+            I = this;
+            coin = PlayerPrefs.GetInt("Coin");
+
+            //PlayerPrefsを必要に応じて初期化
+            if (!PlayerPrefs.HasKey("ATK"))
+            {
+                PlayerPrefs.SetInt("ATK", 1);
+            }
+            if (!PlayerPrefs.HasKey("SPEED"))
+            {
+                PlayerPrefs.SetInt("SPEED", 1);
+            }
+            if (!PlayerPrefs.HasKey("DEF"))
+            {
+                PlayerPrefs.SetFloat("DEF", 3);
+            }
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
     // Use this for initialization
     void Start()

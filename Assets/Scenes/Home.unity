@@ -136,7 +136,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 25349508}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 48.000015, y: -27.999989, z: 0}
+  m_LocalPosition: {x: 48.000015, y: -27.99999, z: 0}
   m_LocalScale: {x: 0.9999986, y: 0.9999986, z: 0.9999986}
   m_Children: []
   m_Father: {fileID: 600522028}
@@ -815,7 +815,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 600522030}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 989027271}
+        m_MethodName: AtkUp
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &600522030
@@ -1450,6 +1461,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   coinText: {fileID: 1552645285}
+  PowerUP: {fileID: 989027269}
   UserCoin: 0
 --- !u!1 &989027269
 GameObject:
@@ -1459,13 +1471,14 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 989027270}
+  - component: {fileID: 989027271}
   m_Layer: 5
   m_Name: PowerUp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &989027270
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1493,6 +1506,24 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &989027271
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 989027269}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1a9e2951fe2f304491c75014c4a1e37, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_atkText: {fileID: 270628135}
+  m_speedText: {fileID: 764377703}
+  m_defText: {fileID: 1195242509}
+  m_atkCoin: {fileID: 25349510}
+  m_speedCoin: {fileID: 1940293545}
+  m_defCoin: {fileID: 1815381300}
+  m_userCoin: {fileID: 1552645285}
 --- !u!1 &997431534
 GameObject:
   m_ObjectHideFlags: 0
@@ -1570,7 +1601,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 997431537}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 989027271}
+        m_MethodName: DefUp
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &997431537
@@ -2472,7 +2514,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1724492790}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 989027271}
+        m_MethodName: SpeedUp
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1724492790
@@ -2585,7 +2638,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 917707691}
-        m_MethodName: PowerUp
+        m_MethodName: ClosePowerUp
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

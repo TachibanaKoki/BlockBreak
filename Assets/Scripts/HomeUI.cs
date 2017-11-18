@@ -8,6 +8,9 @@ public class HomeUI : MonoBehaviour {
     [SerializeField]
     Text coinText;
 
+    [SerializeField]
+    GameObject PowerUP;
+
     public int UserCoin = 0;
 
 	// Use this for initialization
@@ -24,6 +27,11 @@ public class HomeUI : MonoBehaviour {
 	
     public void PowerUp()
     {
-        UnityEngine.SceneManagement.SceneManager.LoadScene("Power-Up");
+        PowerUP.SetActive(true);
+    }
+
+    public void ClosePowerUp()
+    {
+        PowerUP.SetActive(false);
     }
 }
