@@ -29,13 +29,13 @@ public class PowerUpManager : MonoBehaviour
 
     private int atk;
     private int speed;
-    private int def;
+    private float def;
 
     private void OnEnable()
     {
         atk = PlayerPrefs.GetInt("ATK");
         speed = PlayerPrefs.GetInt("SPEED");
-        def = PlayerPrefs.GetInt("DEF");
+        def = PlayerPrefs.GetFloat("DEF");
         m_atkText.text = "攻撃力：" + atk.ToString();
         m_speedText.text = "速度：" + speed.ToString();
         m_defText.text = "耐久力：" + def.ToString();
@@ -52,10 +52,11 @@ public class PowerUpManager : MonoBehaviour
         if (coin <coinCount) return;
         coin -= coinCount;
         atk++;
-        m_atkCoin.text = (coinCount).ToString();
+        m_atkCoin.text = (atk * 10).ToString();
         PlayerPrefs.SetInt("ATK",atk);
         PlayerPrefs.SetInt("Coin",coin);
         m_userCoin.text = coin.ToString();
+        m_atkText.text = "攻撃力：" + atk.ToString();
     }
 
     public void SpeedUp()
@@ -65,22 +66,24 @@ public class PowerUpManager : MonoBehaviour
         if (coin < coinCount) return;
         coin -= coinCount;
         speed++;
-        m_atkCoin.text = (coinCount).ToString();
+        m_speedCoin.text = (speed * 10).ToString();
         PlayerPrefs.SetInt("SPEED", speed);
         PlayerPrefs.SetInt("Coin", coin);
         m_userCoin.text = coin.ToString();
+        m_speedText.text = "速度：" + speed.ToString();
     }
 
     public void DefUp()
     {
         int coin = PlayerPrefs.GetInt("Coin");
-        int coinCount = def * 10;
+        int coinCount = (int)def * 10;
         if (coin < coinCount) return;
         coin -= coinCount;
         def++;
-        m_atkCoin.text = (coinCount).ToString();
-        PlayerPrefs.SetInt("DEF", def);
+        m_defCoin.text = (def * 10).ToString();
+        PlayerPrefs.SetFloat("DEF", def);
         PlayerPrefs.SetInt("Coin", coin);
         m_userCoin.text = coin.ToString();
+        m_defText.text = "耐久力：" + def.ToString();
     }
 }
