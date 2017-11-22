@@ -5,13 +5,20 @@ using UnityEngine.SceneManagement;
 
 public class TitleManager : MonoBehaviour {
 
-    bool isNext = false;
+    bool isNext = true;
 
 	// Use this for initialization
 	void Start ()
     {
-		
+        isNext = true;
+        StartCoroutine(Wait());
 	}
+
+    IEnumerator Wait()
+    {
+        yield return new WaitForSeconds(1.0f);
+        isNext = false;
+    }
 	
 	// Update is called once per frame
 	void Update ()

@@ -61,7 +61,7 @@ public class Ball : MonoBehaviour {
             rigidbody2d.simulated = true;
             Vector3 dir = (startPosition - TouchManager.I.result.position).normalized;
             rigidbody2d.velocity = Vector2.zero;
-            rigidbody2d.AddForce(dir*pow* m_speed, ForceMode2D.Impulse);
+            rigidbody2d.AddForce(dir*pow* (1+m_speed*0.1f), ForceMode2D.Impulse);
             arrow.SetActive(false);
         }
         else
