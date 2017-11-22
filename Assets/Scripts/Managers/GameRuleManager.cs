@@ -106,8 +106,15 @@ public class GameRuleManager : MonoBehaviour
 
         //自機を破壊する
         Destroy(gameInstance.transform.Find("bullet").gameObject);
-
-        ResultObject.transform.Find("BestScore").GetComponent<Text>().text = "ベストスコア"+bestScore.ToString();
+        if(Random.Range(0,2)==0)
+        {
+            ResultObject.transform.Find("Ads").gameObject.SetActive(true);
+        }
+        else
+        {
+            ResultObject.transform.Find("Ads").gameObject.SetActive(false);
+        }
+        ResultObject.transform.Find("BestScore").GetComponent<Text>().text = "ベストスコア:"+bestScore.ToString();
         ResultObject.SetActive(true);
     }
 

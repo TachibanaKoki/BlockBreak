@@ -12,7 +12,14 @@ public class BlockSpawner : MonoBehaviour {
     [SerializeField]
     float resetValue = 0.3f;
 
+    [SerializeField]
+    bool isPowerUp = true;
+
     float startInterval;
+
+    int spawnCount = 0;
+
+
 	// Use this for initialization
 	void Start ()
     {
@@ -26,6 +33,7 @@ public class BlockSpawner : MonoBehaviour {
     {
         //StopAllCoroutines();
         Interval = startInterval;
+        spawnCount = 0;
         StartCoroutine(IntervalBlockSpawn());
     }
 	
@@ -42,7 +50,15 @@ public class BlockSpawner : MonoBehaviour {
         while (true)
         {
             yield return new WaitForSeconds(Interval);
-            GameObject.Instantiate(m_Block, new Vector3(Random.Range(0,10) - 4.0f,11f,0f), Quaternion.identity,transform);
+            if (isPowerUp)
+            {
+                spawnCount++;
+            }
+            for (int i = 0; i < (spawnCount / 5)+1; i++)
+            {
+                GameObject go =  GameObject.Instantiate(m_Block, new Vector3(Random.Range(0, 10) - 4.0f, 11f, 0f), Quaternion.identity, transform);
+                //go.GetComponent<Block>().HP = (spawnCount / 8)+1;
+            }
             Interval = -0.1f;
             if(Interval<= resetValue)
             {
