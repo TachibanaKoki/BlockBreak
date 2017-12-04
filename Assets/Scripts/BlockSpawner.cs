@@ -2,13 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BlockSpawner : MonoBehaviour {
+/// <summary>
+/// ブロックの生成を行う
+/// </summary>
+public class BlockSpawner : MonoBehaviour
+{
+    [Tooltip("生成するブロックのプレハブ")]
     [SerializeField]
     GameObject m_Block;
 
+    [Tooltip("ブロックを生成する間隔")]
     [SerializeField]
     float Interval = 3;
 
+    [Tooltip("ブロック生成間隔をもとに戻す値")]
     [SerializeField]
     float resetValue = 0.3f;
 
@@ -37,14 +44,20 @@ public class BlockSpawner : MonoBehaviour {
         StartCoroutine(IntervalBlockSpawn());
     }
 	
-	// Update is called once per frame
+	/// <summary>
+    /// リトライ時にインスタンスを破棄するのでイベントの登録を解除
+    /// </summary>
 	void OnDestroy()
     {
         GameRuleManager.I.Initialize -= Init;
         StopAllCoroutines();
 	}
 
-    public IEnumerator IntervalBlockSpawn()
+    /// <summary>
+    /// 一定間隔でブロックの生成を行う
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator IntervalBlockSpawn()
     {
         GameObject.Instantiate(m_Block, new Vector3(Random.Range(0, 10) - 4.0f, 11f, 0f), Quaternion.identity,transform);
         while (true)

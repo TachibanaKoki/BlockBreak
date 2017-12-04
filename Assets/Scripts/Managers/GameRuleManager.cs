@@ -1,10 +1,18 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
 using UnityEngine.Advertisements;
+using Random = UnityEngine.Random;
+using Debug = UnityEngine.Debug;
 
+/// <summary>
+/// メインのゲームルールを制御するクラス
+/// 主にUIで表示する必要のパラメータを制御します
+/// </summary>
 public class GameRuleManager : MonoBehaviour
 {
 
@@ -31,8 +39,12 @@ public class GameRuleManager : MonoBehaviour
 
     float time = 0;
 
+    /// <summary>
+    /// 初期化イベント
+    /// ゲームのリトライなどでの初期化時に呼び出す\\\\\
+    /// </summary>
     public UnityAction Initialize;
-
+    
     private void Awake()
     {
         I = this;
@@ -47,6 +59,9 @@ public class GameRuleManager : MonoBehaviour
         m_scoreText.text = "0";
     }
 
+    /// <summary>
+    ///　このクラスの初期化
+    /// </summary>
     private void Init()
     {
         state = GameState.Start;
@@ -87,12 +102,17 @@ public class GameRuleManager : MonoBehaviour
         m_scoreText.text = GameManager.I.Score.ToString();
     }
 
+    /// <summary>
+    /// ゲームオーバー時に呼び出す
+    /// </summary>
     public void GameOver()
     {
         if (state != GameState.Playing) return;
+
         state = GameState.Result;
         int score = GameManager.I.Score;
         Time.timeScale = 1.0f;
+
         ResultObject.transform.Find("Score").GetComponent<Text>().text = "スコア："+score.ToString();
 
         int bestScore = PlayerPrefs.GetInt("BestScore");
@@ -106,7 +126,18 @@ public class GameRuleManager : MonoBehaviour
 
         //自機を破壊する
         Destroy(gameInstance.transform.Find("bullet").gameObject);
-        if(Random.Range(0,2)==0)
+
+        //動画広告を確率で表示する
+        RandomShowAds();
+
+        ResultObject.transform.Find("BestScore").GetComponent<Text>().text = "ベストスコア:"+bestScore.ToString();
+        ResultObject.SetActive(true);
+    }
+
+    void RandomShowAds()
+    {
+        //確率で動画広告を表示する
+        if (Random.Range(0, 2) == 0)
         {
             ResultObject.transform.Find("Ads").gameObject.SetActive(true);
         }
@@ -114,10 +145,11 @@ public class GameRuleManager : MonoBehaviour
         {
             ResultObject.transform.Find("Ads").gameObject.SetActive(false);
         }
-        ResultObject.transform.Find("BestScore").GetComponent<Text>().text = "ベストスコア:"+bestScore.ToString();
-        ResultObject.SetActive(true);
     }
 
+    /// <summary>
+    ///  時間制限
+    /// </summary>
     void TimeCountor()
     {
         time -= Time.deltaTime;
@@ -129,19 +161,28 @@ public class GameRuleManager : MonoBehaviour
         }
     }
 
-    public void Result()
+    /// <summary>
+    /// ゲームを新規に開始する
+    /// </summary>
+    public void ReTry()
     {
         Destroy(gameInstance);
         Initialize();
         GameManager.I.ScoretoCoin();
     }
 
+    /// <summary>
+    /// タイトルに戻る
+    /// </summary>
     public void TitleBack()
     {
         GameManager.I.ScoretoCoin();
         UnityEngine.SceneManagement.SceneManager.LoadScene("Title");
     }
-
+    
+    /// <summary>
+    /// 全画面動画広告を再生する
+    /// </summary>
     public void ShowRewardedAd()
     {
         if (Advertisement.IsReady("rewardedVideo"))
@@ -151,6 +192,9 @@ public class GameRuleManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 動画広告の結果
+    /// </summary>
     private void HandleShowResult(ShowResult result)
     {
         switch (result)
@@ -168,6 +212,9 @@ public class GameRuleManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// ゲーム開始入力待機
+    /// </summary>
     void StartWait()
     {
         if (TouchManager.I.IsTouchStart())
