@@ -49,9 +49,9 @@ public class PowerUpManager : MonoBehaviour
     private void OnEnable()
     {
         //各種パラメータを取得
-        atk = PlayerPrefs.GetInt("ATK");
-        speed = PlayerPrefs.GetInt("SPEED");
-        def = PlayerPrefs.GetFloat("DEF");
+        atk = GameManager.PlayerATK;
+        speed = GameManager.PlayerSPEED;
+        def = GameManager.PlayerDEF;
 
         //パラメータを表示に反映する
         m_atkText.text = "攻撃力：" + atk.ToString();

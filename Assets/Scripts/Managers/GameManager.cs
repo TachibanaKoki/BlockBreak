@@ -17,9 +17,34 @@ public class GameManager : MonoBehaviour
     private int m_score;
     public int Score { get { return m_score; } }
 
+    public static int PlayerATK
+    {
+     get {
+            return PlayerPrefs.GetInt("ATK",1);
+        }   
+    }
+
+    public static int PlayerSPEED
+    {
+        get
+        {
+           return  PlayerPrefs.GetInt("SPEED", 1);
+
+        }
+    }
+
+    public static int PlayerDEF
+    {
+        get
+        {
+            return PlayerPrefs.GetInt("DEF", 3);
+        }
+    }
+
     private int BestScore;
 
     private int coin;
+
 
     private void Awake()
     {
@@ -28,26 +53,13 @@ public class GameManager : MonoBehaviour
             DontDestroyOnLoad(gameObject);
             I = this;
             coin = PlayerPrefs.GetInt("Coin");
-
-            //PlayerPrefsを必要に応じて初期化
-            if (!PlayerPrefs.HasKey("ATK"))
-            {
-                PlayerPrefs.SetInt("ATK", 1);
-            }
-            if (!PlayerPrefs.HasKey("SPEED"))
-            {
-                PlayerPrefs.SetInt("SPEED", 1);
-            }
-            if (!PlayerPrefs.HasKey("DEF"))
-            {
-                PlayerPrefs.SetFloat("DEF", 3);
-            }
         }
         else
         {
             Destroy(gameObject);
         }
     }
+
     // Use this for initialization
     void Start()
     {
