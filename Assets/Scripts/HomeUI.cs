@@ -18,6 +18,7 @@ public class HomeUI : MonoBehaviour {
     {
         UserCoin = PlayerPrefs.GetInt("Coin");
         coinText.text = UserCoin.ToString();
+        SoundManager.PlayBGM("Home");
 	}
 
     public void NextBattle()

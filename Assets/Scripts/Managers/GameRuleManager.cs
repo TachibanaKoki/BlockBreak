@@ -69,6 +69,8 @@ public class GameRuleManager : MonoBehaviour
         gameInstance = GameObject.Instantiate(GameInstanceRef);
         gameInstance.SetActive(true);
         ResultObject.SetActive(false);
+        SoundManager.PlayBGM("Main");
+        //SoundManager.PlaySE("start");
     }
 
     // Update is called once per frame

@@ -26,6 +26,7 @@ public class TitleManager : MonoBehaviour {
         if (isNext) return;
 		if(TouchManager.I.IsTouchStart())
         {
+            SoundManager.PlaySE("select");
             SceneManager.LoadSceneAsync("Home");
             isNext = true;
         }
