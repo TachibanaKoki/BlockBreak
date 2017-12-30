@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 /// 自機の制御を行う
 /// </summary>
-public class Ball : MonoBehaviour {
+public class Player : MonoBehaviour {
 
     //移動時にかける力
     [SerializeField]
@@ -26,24 +26,9 @@ public class Ball : MonoBehaviour {
     {
         rigidbody2d = GetComponent<Rigidbody2D>();
         m_arrow.SetActive(false);
-
-        if (PlayerPrefs.HasKey("ATK"))
-        {
-            m_atk = PlayerPrefs.GetInt("ATK");
-        }
-        else
-        {
-            PlayerPrefs.SetInt("ATK", m_atk);
-        }
-
-        if (PlayerPrefs.HasKey("SPEED"))
-        {
-            m_speed = PlayerPrefs.GetInt("SPEED");
-        }
-        else
-        {
-            PlayerPrefs.SetInt("SPEED", m_speed);
-        }
+        m_atk = GameManager.PlayerATK;
+        m_speed = GameManager.PlayerSPEED;
+        
     }
 	
 	// Update is called once per frame
@@ -91,6 +76,10 @@ public class Ball : MonoBehaviour {
     //離した時の方向に合わせてオブジェクトを飛ばす
     void TouchEnd()
     {
+        //SE再生
+        SoundManager.PlaySE("shot");
+
+        //発射処理
         rigidbody2d.simulated = true;
         Vector3 dir = (startPosition - TouchManager.I.result.position).normalized;
         rigidbody2d.velocity = Vector2.zero;
