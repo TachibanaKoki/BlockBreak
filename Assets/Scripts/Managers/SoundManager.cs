@@ -80,12 +80,6 @@ public class SoundManager : MonoBehaviour
 
     static AudioClips BGM = new AudioClips();
 
-    [RuntimeInitializeOnLoadMethod]
-    static void Init()
-    {
-        GameObject go = new GameObject();
-        go.AddComponent<SoundManager>();
-    }
 
     void Awake()
     {
@@ -95,7 +89,6 @@ public class SoundManager : MonoBehaviour
             //Resourcesから一括キャッシュ
             SE.AddClips(Resources.LoadAll<AudioClip>("SE"));
             BGM.AddClips(Resources.LoadAll<AudioClip>("BGM"));
-            DontDestroyOnLoad(gameObject);
 
             PlayBGM("Title");
         }

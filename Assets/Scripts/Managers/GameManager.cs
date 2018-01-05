@@ -45,12 +45,23 @@ public class GameManager : MonoBehaviour
 
     private int coin;
 
+    [RuntimeInitializeOnLoadMethod]
+    private void RuntimeInitialize()
+    {
+        //常駐させたいクラスを初期化する
+        GameObject go = new GameObject();
+        go.AddComponent<GameManager>();
+        go.AddComponent<AudioSource>();
+        go.AddComponent<SoundManager>();
+        go.AddComponent<Util>();
+
+        DontDestroyOnLoad(go);
+    }
 
     private void Awake()
     {
         if (I == null)
         {
-            DontDestroyOnLoad(gameObject);
             I = this;
             coin = PlayerPrefs.GetInt("Coin");
         }

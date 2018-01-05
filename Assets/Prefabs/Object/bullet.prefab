@@ -37,7 +37,7 @@ GameObject:
   - component: {fileID: 4967151140922254}
   - component: {fileID: 212493596323941752}
   m_Layer: 0
-  m_Name: rocket-red
+  m_Name: PlayerSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -118,7 +118,7 @@ Rigidbody2D:
   m_AngularDrag: 0.05
   m_GravityScale: 0
   m_Material: {fileID: 6200000, guid: 7ebdf412a81862d40b312dd04b156264, type: 2}
-  m_Interpolate: 1
+  m_Interpolate: 2
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0

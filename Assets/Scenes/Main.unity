@@ -6533,11 +6533,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 50884041183486832, guid: bd55815803711014bbfdd85b060eceb1,
-        type: 2}
-      propertyPath: m_Interpolate
-      value: 2
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bd55815803711014bbfdd85b060eceb1, type: 2}
   m_IsPrefabParent: 0
