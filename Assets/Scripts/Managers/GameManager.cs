@@ -46,7 +46,7 @@ public class GameManager : MonoBehaviour
     private int coin;
 
     [RuntimeInitializeOnLoadMethod]
-    private void RuntimeInitialize()
+    private static void RuntimeInitialize()
     {
         //常駐させたいクラスを初期化する
         GameObject go = new GameObject();

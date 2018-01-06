@@ -87,4 +87,11 @@ public class Player : MonoBehaviour {
         m_arrow.SetActive(false);
     }
 
+    void OnCollisionExit2D(Collision2D col)
+    {
+        rigidbody2d.angularVelocity = 0;
+        rigidbody2d.velocity = (rigidbody2d.velocity.normalized) * pow * (1 + m_speed * 0.1f);
+        Debug.Log("velocity"+rigidbody2d.velocity.magnitude);
+    }
+
 }

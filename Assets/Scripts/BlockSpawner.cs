@@ -26,12 +26,15 @@ public class BlockSpawner : MonoBehaviour
 
     int spawnCount = 0;
 
+    List<Block> m_Pool;
+
 
 	// Use this for initialization
 	void Start ()
     {
         startInterval = Interval;
         GameRuleManager.I.Initialize += Init;
+        m_Pool = new List<Block>();
         //CollectBlockSpawn();
         Init();
 	}
@@ -59,7 +62,7 @@ public class BlockSpawner : MonoBehaviour
     /// <returns></returns>
     private IEnumerator IntervalBlockSpawn()
     {
-        GameObject.Instantiate(m_Block, new Vector3(Random.Range(0, 10) - 4.0f, 11f, 0f), Quaternion.identity,transform);
+        m_Pool.Add(GameObject.Instantiate(m_Block, new Vector3(Random.Range(0, 10) - 4.0f, 11f, 0f), Quaternion.identity,transform).GetComponent<Block>());
         while (true)
         {
             yield return new WaitForSeconds(Interval);
@@ -67,9 +70,19 @@ public class BlockSpawner : MonoBehaviour
             {
                 spawnCount++;
             }
+            Block[] blocks = m_Pool.FindAll(n => n.isActive == false).ToArray();
             for (int i = 0; i < (spawnCount / 5)+1; i++)
             {
-                GameObject go =  GameObject.Instantiate(m_Block, new Vector3(Random.Range(0, 10) - 4.0f, 11f, 0f), Quaternion.identity, transform);
+                if (i < blocks.Length)
+                {
+                    blocks[i]._transform.position = new Vector3(Random.Range(0, 10) - 4.0f, 11f, 0f);
+                    blocks[i].ObjectActive();
+                }
+                else
+                {
+                   GameObject go  = GameObject.Instantiate(m_Block, new Vector3(Random.Range(0, 10) - 4.0f, 11f, 0f), Quaternion.identity, transform);
+                    m_Pool.Add(go.GetComponent<Block>());
+                }
                 //go.GetComponent<Block>().HP = (spawnCount / 8)+1;
             }
             Interval = -0.1f;

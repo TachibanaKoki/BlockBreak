@@ -20,11 +20,13 @@ public class EffectManager : MonoBehaviour {
 
     public void BlockExprosion(Vector3 posion)
     {
-        GameObject.Instantiate(m_BlockExporsion, posion,Quaternion.identity);
+        Destroy(GameObject.Instantiate(m_BlockExporsion, posion,Quaternion.identity),0.5f);
+        SoundManager.PlaySE("explosion");
     }
 
     public void ItemGetEffect(Vector3 posion)
     {
-        GameObject.Instantiate(m_ItemGetEffect, posion, Quaternion.identity);
+        Destroy(GameObject.Instantiate(m_ItemGetEffect, posion, Quaternion.identity),0.5f);
+        SoundManager.PlaySE("powerup");
     }
 }

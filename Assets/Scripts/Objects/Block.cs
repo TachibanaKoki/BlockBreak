@@ -5,44 +5,69 @@ using UnityEngine;
 public class Block : MonoBehaviour
 {
     public float HP = 1;
+
+    [HideInInspector]
     public float MaxHp;
+    [HideInInspector]
+    public Transform _transform;
+    [HideInInspector]
+    private Vector3 m_velocity = new Vector3(0, -3, 0);
 
+    protected Renderer[] m_renderers;
+    protected Collider2D m_collision;
+    private UnityEngine.Events.UnityAction ObjectDisable;
 
-    private SpriteRenderer renderer;
+    public bool isActive { get { return m_collision.enabled; } }
+
 
     private void Start()
     {
-        renderer = transform.Find("PlayerSprite").GetComponent<SpriteRenderer>();
+        m_renderers = transform.GetComponentsInChildren<Renderer>();
+        m_collision = gameObject.GetComponent<Collider2D>();
         MaxHp = HP;
+        ObjectDisable += ObjectDestroy;
+        _transform = gameObject.transform;
+        ObjectActive();
+     }
+
+    private void Update()
+    {
+        Move();
     }
 
-    void ObjectActive()
+    void Move()
+    {
+        _transform.Translate(m_velocity*Time.deltaTime);
+    }
+
+    public void ObjectActive()
     {
         HP = MaxHp;
-        renderer.enabled = true;
-    }
+        foreach(var renderer in m_renderers)
+        {
+            renderer.enabled = true;
+        }
+        m_collision.enabled = true;
+    }   
 
-    void ObjectDestroy()
+    protected virtual void ObjectDestroy()
     {
-        Destroy(gameObject, 1.0f);
-        renderer.enabled = false;
+        foreach (var renderer in m_renderers)
+        {
+            renderer.enabled = false;
+        }
+        m_collision.enabled = false;
         EffectManager.I.BlockExprosion(transform.position);
-    }
+    }   
 
-    
-
-    private void OnCollisionEnter2D(Collision2D col)
+    protected virtual void OnCollisionEnter2D(Collision2D col)
     {
         if(col.transform.tag == "Ball")
         {
             HP--;
         }
 
-        if(col.transform.tag == "EndLine")
-        {
-            ObjectDestroy();
-        }
-        else if(HP<=0)
+        if(col.transform.tag == "EndLine"|| HP <= 0)
         {
             ObjectDestroy();
         }

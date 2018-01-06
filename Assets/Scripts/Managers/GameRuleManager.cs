@@ -28,7 +28,7 @@ public class GameRuleManager : MonoBehaviour
     Text m_scoreText;
 
     [SerializeField]
-    GameObject ResultObject;
+    Result ResultObject;
 
     [SerializeField]
     GameObject GameInstanceRef;
@@ -68,7 +68,7 @@ public class GameRuleManager : MonoBehaviour
         time = m_TimeLimit;
         gameInstance = GameObject.Instantiate(GameInstanceRef);
         gameInstance.SetActive(true);
-        ResultObject.SetActive(false);
+        ResultObject.gameObject.SetActive(false);
         SoundManager.PlayBGM("Main");
         //SoundManager.PlaySE("start");
     }
@@ -107,46 +107,19 @@ public class GameRuleManager : MonoBehaviour
     /// <summary>
     /// ゲームオーバー時に呼び出す
     /// </summary>
-    public void GameOver()
+    public void GameOver(string caseOfDeath)
     {
         if (state != GameState.Playing) return;
 
         state = GameState.Result;
-        int score = GameManager.I.Score;
+
         Time.timeScale = 1.0f;
-
-        ResultObject.transform.Find("Score").GetComponent<Text>().text = "スコア："+score.ToString();
-
-        int bestScore = PlayerPrefs.GetInt("BestScore");
-
-        if(bestScore< score)
-        {
-            //ニューレコード
-            bestScore = score;
-            PlayerPrefs.SetInt("BestScore",bestScore);
-        }
+        ResultObject.Open(caseOfDeath);
 
         //自機を破壊する
-        Destroy(gameInstance.transform.Find("bullet").gameObject);
-
-        //動画広告を確率で表示する
-        RandomShowAds();
-
-        ResultObject.transform.Find("BestScore").GetComponent<Text>().text = "ベストスコア:"+bestScore.ToString();
-        ResultObject.SetActive(true);
-    }
-
-    void RandomShowAds()
-    {
-        //確率で動画広告を表示する
-        if (Random.Range(0, 2) == 0)
-        {
-            ResultObject.transform.Find("Ads").gameObject.SetActive(true);
-        }
-        else
-        {
-            ResultObject.transform.Find("Ads").gameObject.SetActive(false);
-        }
+        GameObject player = gameInstance.transform.Find("bullet").gameObject;
+        Destroy(player);
+        EffectManager.I.BlockExprosion(player.transform.position);
     }
 
     /// <summary>
@@ -159,7 +132,7 @@ public class GameRuleManager : MonoBehaviour
         if (time < 0.0f)
         {
             time = 0.0f;
-            GameOver();
+            GameOver("時間切れ");
         }
     }
 

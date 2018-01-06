@@ -6,22 +6,34 @@ using UnityEngine;
 /// <summary>
 ///   プレイヤーに接触するとスコアが上がるオブジェクト
 /// </summary>
-public class Item : MonoBehaviour {
+public class Item : Block {
 
-    private void OnTriggerEnter2D(Collider2D col)
+    protected override void OnCollisionEnter2D(Collision2D col)
+    {
+    }
+    protected override void ObjectDestroy()
+    {
+        foreach (var renderer in m_renderers)
+        {
+            renderer.enabled = false;
+        }
+        m_collision.enabled = false;
+        EffectManager.I.ItemGetEffect(transform.position);
+    }
+
+    protected void  OnTriggerEnter2D(Collider2D col)
     {
         //自機
         if (col.transform.tag == "Ball")
         {
-            Destroy(gameObject);
+            ObjectDestroy();
             GameManager.I.AddScore();
-            EffectManager.I.ItemGetEffect(transform.position);
         }
 
         //防衛ライン
         if (col.transform.tag == "EndLine")
         {
-            Destroy(gameObject);
+            ObjectDestroy();
         }
     }
 }
