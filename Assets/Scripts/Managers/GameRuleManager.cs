@@ -9,6 +9,13 @@ using UnityEngine.Advertisements;
 using Random = UnityEngine.Random;
 using Debug = UnityEngine.Debug;
 
+public enum GameMode
+{
+    Survivor,
+    TimeAttack
+}
+
+
 /// <summary>
 /// メインのゲームルールを制御するクラス
 /// 主にUIで表示する必要のパラメータを制御します
@@ -37,6 +44,8 @@ public class GameRuleManager : MonoBehaviour
 
     public GameState state;
 
+    public GameMode mode = GameMode.Survivor;
+
     float time = 0;
 
     /// <summary>
@@ -44,7 +53,7 @@ public class GameRuleManager : MonoBehaviour
     /// ゲームのリトライなどでの初期化時に呼び出す\\\\\
     /// </summary>
     public UnityAction Initialize;
-    
+
     private void Awake()
     {
         I = this;
@@ -66,7 +75,8 @@ public class GameRuleManager : MonoBehaviour
     {
         state = GameState.Start;
         time = m_TimeLimit;
-        gameInstance = GameObject.Instantiate(GameInstanceRef);
+        m_timeText.enabled = (mode == GameMode.TimeAttack);
+            gameInstance = GameObject.Instantiate(GameInstanceRef);
         gameInstance.SetActive(true);
         ResultObject.gameObject.SetActive(false);
         SoundManager.PlayBGM("Main");
@@ -89,16 +99,19 @@ public class GameRuleManager : MonoBehaviour
                 break;
         }
 
-        float val = time - Mathf.Floor(time);
-        val *= 100;
-        val = Mathf.Floor(val);
-        if (val < 10.0f)
+        if (mode == GameMode.TimeAttack)
         {
-            m_timeText.text = Mathf.Floor(time).ToString() + ":0" + val;
-        }
-        else
-        {
-            m_timeText.text = Mathf.Floor(time).ToString() + ":" + val;
+            float val = time - Mathf.Floor(time);
+            val *= 100;
+            val = Mathf.Floor(val);
+            if (val < 10.0f)
+            {
+                m_timeText.text = Mathf.Floor(time).ToString() + ":0" + val;
+            }
+            else
+            {
+                m_timeText.text = Mathf.Floor(time).ToString() + ":" + val;
+            }
         }
 
         m_scoreText.text = GameManager.I.Score.ToString();
@@ -127,6 +140,7 @@ public class GameRuleManager : MonoBehaviour
     /// </summary>
     void TimeCountor()
     {
+        if (mode != GameMode.TimeAttack) return;
         time -= Time.deltaTime;
         //ゲームオーバー
         if (time < 0.0f)
@@ -154,7 +168,7 @@ public class GameRuleManager : MonoBehaviour
         GameManager.I.ScoretoCoin();
         UnityEngine.SceneManagement.SceneManager.LoadScene("Title");
     }
-    
+
     /// <summary>
     /// 全画面動画広告を再生する
     /// </summary>

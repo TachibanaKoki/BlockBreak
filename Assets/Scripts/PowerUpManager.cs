@@ -37,7 +37,7 @@ public class PowerUpManager : MonoBehaviour
 
     private int atk;
     private int speed;
-    private float def;
+    private int def;
 
     //攻撃力強化時に要求されるコインの上昇率
     private int atkRate = 10;
@@ -78,6 +78,7 @@ public class PowerUpManager : MonoBehaviour
         m_atkCoin.text = (atk * atkRate).ToString();
         PlayerPrefs.SetInt("ATK",atk);
         PlayerPrefs.SetInt("Coin",coin);
+        PlayerPrefs.Save();
         m_userCoin.text = coin.ToString();
         m_atkText.text = "攻撃力：" + atk.ToString();
     }
@@ -97,6 +98,7 @@ public class PowerUpManager : MonoBehaviour
         m_speedCoin.text = (speed * speedRate).ToString();
         PlayerPrefs.SetInt("SPEED", speed);
         PlayerPrefs.SetInt("Coin", coin);
+        PlayerPrefs.Save();
         m_userCoin.text = coin.ToString();
         m_speedText.text = "速度：" + speed.ToString();
     }
@@ -114,8 +116,9 @@ public class PowerUpManager : MonoBehaviour
         coin -= coinCount;
         def++;
         m_defCoin.text = (def * defRate).ToString();
-        PlayerPrefs.SetFloat("DEF", def);
+        PlayerPrefs.SetInt("DEF", def);
         PlayerPrefs.SetInt("Coin", coin);
+        PlayerPrefs.Save();
         m_userCoin.text = coin.ToString();
         m_defText.text = "耐久力：" + def.ToString();
     }

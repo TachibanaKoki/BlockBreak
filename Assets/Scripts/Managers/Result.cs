@@ -53,6 +53,7 @@ public class Result : MonoBehaviour
             bestScore = score;
             PlayerPrefs.SetInt("BestScore", bestScore);
         }
+        PlayerPrefs.Save();
         m_BestScoreText.text = "ベストスコア:" + bestScore.ToString();
 
         //動画広告を確率で表示する

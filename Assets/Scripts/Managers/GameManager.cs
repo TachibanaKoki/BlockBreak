@@ -37,7 +37,7 @@ public class GameManager : MonoBehaviour
     {
         get
         {
-            return PlayerPrefs.GetInt("DEF", 3);
+            return PlayerPrefs.GetInt("DEF", 2);
         }
     }
 
