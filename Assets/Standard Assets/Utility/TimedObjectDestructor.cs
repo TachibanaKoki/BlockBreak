@@ -21,7 +21,7 @@ namespace UnityStandardAssets.Utility
             {
                 transform.DetachChildren();
             }
-            DestroyObject(gameObject);
+            gameObject.SetActive(false);
         }
     }
 }

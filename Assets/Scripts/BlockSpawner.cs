@@ -11,6 +11,10 @@ public class BlockSpawner : MonoBehaviour
     [SerializeField]
     GameObject m_Block;
 
+    [Tooltip("生成するアイテムのプレハブ")]
+    [SerializeField]
+    GameObject m_itemPrefab;
+
     [Tooltip("ブロックを生成する間隔")]
     [SerializeField]
     float Interval = 3;
@@ -25,8 +29,10 @@ public class BlockSpawner : MonoBehaviour
     float startInterval;
 
     int spawnCount = 0;
+    int level = 1;
 
-    List<Block> m_Pool;
+    List<Block> m_meteoPool;
+    List<Block> m_itemPool;
 
 
     // Use this for initialization
@@ -34,7 +40,8 @@ public class BlockSpawner : MonoBehaviour
     {
         startInterval = Interval;
         GameRuleManager.I.Initialize += Init;
-        m_Pool = new List<Block>();
+        m_meteoPool = new List<Block>();
+        m_itemPool = new List<Block>();
         //CollectBlockSpawn();
         Init();
     }
@@ -44,7 +51,7 @@ public class BlockSpawner : MonoBehaviour
         //StopAllCoroutines();
         Interval = startInterval;
         spawnCount = 0;
-        StartCoroutine(IntervalBlockSpawn());
+        StartCoroutine(LineSpawnPattern());
     }
 
     /// <summary>
@@ -56,42 +63,6 @@ public class BlockSpawner : MonoBehaviour
         StopAllCoroutines();
     }
 
-    /// <summary>
-    /// 一定間隔でブロックの生成を行う
-    /// </summary>
-    /// <returns></returns>
-    private IEnumerator IntervalBlockSpawn()
-    {
-        m_Pool.Add(GameObject.Instantiate(m_Block, new Vector3(Random.Range(0, 10) - 4.0f, 11f, 0f), Quaternion.identity, transform).GetComponent<Block>());
-        while (true)
-        {
-            yield return new WaitForSeconds(Interval);
-            if (isPowerUp)
-            {
-                spawnCount++;
-            }
-            Block[] blocks = m_Pool.FindAll(n => n.isActive == false).ToArray();
-            for (int i = 0; i < (spawnCount / 5) + 1; i++)
-            {
-                if (i < blocks.Length)
-                {
-                    blocks[i]._transform.position = new Vector3(Random.Range(0, 10) - 4.0f, 11f, 0f);
-                    blocks[i].ObjectActive();
-                }
-                else
-                {
-                    GameObject go = GameObject.Instantiate(m_Block, new Vector3(Random.Range(0, 10) - 4.0f, 11f, 0f), Quaternion.identity, transform);
-                    m_Pool.Add(go.GetComponent<Block>());
-                }
-                //go.GetComponent<Block>().HP = (spawnCount / 8)+1;
-            }
-            Interval = -0.1f;
-            if (Interval <= resetValue)
-            {
-                Interval = startInterval - resetValue;
-            }
-        }
-    }
 
     //列単位でオブジェクトを追加していく
     public IEnumerator LineSpawnPattern()
@@ -100,25 +71,10 @@ public class BlockSpawner : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(Interval);
-            if (isPowerUp)
-            {
-                spawnCount++;
-            }
-            Block[] blocks = m_Pool.FindAll(n => n.isActive == false).ToArray();
-            for (int i = 0; i < (spawnCount / 5) + 1; i++)
-            {
-                if (i < blocks.Length)
-                {
-                    blocks[i]._transform.position = new Vector3(Random.Range(0, 10) - 4.0f, 11f, 0f);
-                    blocks[i].ObjectActive();
-                }
-                else
-                {
-                    GameObject go = GameObject.Instantiate(m_Block, new Vector3(Random.Range(0, 10) - 4.0f, 11f, 0f), Quaternion.identity, transform);
-                    m_Pool.Add(go.GetComponent<Block>());
-                }
-                //go.GetComponent<Block>().HP = (spawnCount / 8)+1;
-            }
+            if (GameRuleManager.I.state == GameState.Start) continue;
+            spawnCount++;
+            level = (spawnCount/3)+1;
+            LineSpawn();
             Interval = -0.1f;
             if (Interval <= resetValue)
             {
@@ -128,31 +84,59 @@ public class BlockSpawner : MonoBehaviour
     }
     private void LineSpawn()
     {
-        Block[] blocks = m_Pool.FindAll(n => n.isActive == false).ToArray();
-        for (int i = 0; i < 10; i++)
+        //横一列分のブロック生成処理
+        Block[] blocks = m_meteoPool.FindAll(n => n.isActive == false).ToArray();
+        Block[] items = m_itemPool.FindAll(n => n.isActive == false).ToArray();
+        for (int i = 0; i < 8; i++)
         {
-
-            if (i < blocks.Length)
+            int random = Random.Range(0,2);
+            if (random == 0)
             {
-                blocks[i]._transform.position = new Vector3(Random.Range(0, 10) - 4.0f, 11f, 0f);
-                blocks[i].ObjectActive();
-            }
-            else
-            {
-                GameObject go = GameObject.Instantiate(m_Block, new Vector3(Random.Range(0, 10) - 4.0f, 11f, 0f), Quaternion.identity, transform);
-                m_Pool.Add(go.GetComponent<Block>());
+                random = Random.Range(0, 2);
+                if (random == 0)
+                {
+                    MeteoSpawn(blocks, i);
+                }
+                else
+                {
+                    ItemSpawn(items,i);
+                }
             }
         }
     }
-
-    public void CollectBlockSpawn()
+    
+    private void MeteoSpawn(Block[] blocks,int index)
     {
-        for (int i = 0; i < 100; i++)
+        Block block = null;
+        if (index < blocks.Length)
         {
-            if (Random.Range(0, 10) == 0)
-            {
-                GameObject.Instantiate(m_Block, new Vector3((i % 10) - 4.0f, (i / 10) - 3.0f, 0), Quaternion.identity, transform);
-            }
+            blocks[index]._transform.position = new Vector3((index * 1.2f) - 4.0f, 11f, 0f);
+            blocks[index].ObjectActive();
+            block = blocks[index];
+        }
+        else
+        {
+            GameObject go = GameObject.Instantiate(m_Block, new Vector3((index * 1.2f) - 4.0f, 11f, 0f), Quaternion.identity, transform);
+            m_meteoPool.Add(go.GetComponent<Block>());
+            block = go.GetComponent<Block>();
+        }
+
+        block.HP = Random.Range(1,level + 1);
+        block.MaxHp = block.HP;
+    }
+
+    private void ItemSpawn(Block[] blocks, int index)
+    {
+        if (index < blocks.Length)
+        {
+            blocks[index]._transform.position = new Vector3((index * 1.2f) - 4.0f, 11f, 0f);
+            blocks[index].ObjectActive();
+        }
+        else
+        {
+            GameObject go = GameObject.Instantiate(m_itemPrefab, new Vector3((index * 1.2f) - 4.0f, 11f, 0f), Quaternion.identity, transform);
+            m_itemPool.Add(go.GetComponent<Block>());
         }
     }
+
 }

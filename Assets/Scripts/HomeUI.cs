@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class HomeUI : MonoBehaviour {
 
@@ -24,15 +25,18 @@ public class HomeUI : MonoBehaviour {
     public void NextBattle()
     {
         UnityEngine.SceneManagement.SceneManager.LoadScene("Main");
+        TransitionManager.I.FadeOut(0.3f);
     }
 	
     public void PowerUp()
     {
         PowerUP.SetActive(true);
+        PowerUP.transform.DOLocalMoveX(0, 0.1f);
     }
 
     public void ClosePowerUp()
     {
         PowerUP.SetActive(false);
+        PowerUP.transform.DOLocalMoveX(-800, 0.1f);
     }
 }

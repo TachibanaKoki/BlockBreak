@@ -13,9 +13,11 @@ public class Block : MonoBehaviour
     [HideInInspector]
     private Vector3 m_velocity = new Vector3(0, -3, 0);
 
+
     protected Renderer[] m_renderers;
     protected Collider2D m_collision;
     private UnityEngine.Events.UnityAction ObjectDisable;
+
 
     public bool isActive { get { return m_collision.enabled; } }
 
@@ -35,7 +37,7 @@ public class Block : MonoBehaviour
         Move();
     }
 
-    void Move()
+    protected void Move()
     {
         _transform.Translate(m_velocity*Time.deltaTime);
     }
@@ -64,7 +66,7 @@ public class Block : MonoBehaviour
     {
         if(col.transform.tag == "Ball")
         {
-            HP--;
+            HP= Mathf.Max(0, HP - col.gameObject.GetComponent<Player>().m_atk);
         }
 
         if(col.transform.tag == "EndLine"|| HP <= 0)

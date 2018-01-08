@@ -38,6 +38,9 @@ public class GameRuleManager : MonoBehaviour
     Result ResultObject;
 
     [SerializeField]
+    SpriteRenderer BG_Image;
+
+    [SerializeField]
     GameObject GameInstanceRef;
 
     GameObject gameInstance;
@@ -47,6 +50,11 @@ public class GameRuleManager : MonoBehaviour
     public GameMode mode = GameMode.Survivor;
 
     float time = 0;
+
+    [SerializeField]
+    GameObject GameStartObject;
+    [SerializeField]
+    GameObject GameStartEffect;
 
     /// <summary>
     /// 初期化イベント
@@ -76,12 +84,39 @@ public class GameRuleManager : MonoBehaviour
         state = GameState.Start;
         time = m_TimeLimit;
         m_timeText.enabled = (mode == GameMode.TimeAttack);
-            gameInstance = GameObject.Instantiate(GameInstanceRef);
+        gameInstance = GameObject.Instantiate(GameInstanceRef);
         gameInstance.SetActive(true);
         ResultObject.gameObject.SetActive(false);
         SoundManager.PlayBGM("Main");
+        GameStartObject.SetActive(true);
         //SoundManager.PlaySE("start");
     }
+
+    IEnumerator ColorFade(float duration = 0.1f, bool isFadeOut=true)
+    {
+        float timer = 0;
+
+        while(true)
+        {
+            timer += Time.unscaledDeltaTime;
+            
+            if(isFadeOut)
+            {
+                fadeColor = Mathf.Clamp01(fadeColor - (Time.unscaledDeltaTime*(1/duration)));
+            }
+            else
+            {
+                fadeColor = Mathf.Clamp01(fadeColor + (Time.unscaledDeltaTime * (1 / duration)));
+            }
+            BG_Image.material.color = new Color(1,1,1,fadeColor*0.5f+0.5f);
+            if (fadeColor<=0||fadeColor>=1) { break; }
+            yield return null;
+        }
+    }
+
+    float fadeColor = 1;
+
+    Coroutine fadeCoroutine = null;
 
     // Update is called once per frame
     void Update()
@@ -90,10 +125,20 @@ public class GameRuleManager : MonoBehaviour
         {
             case GameState.Start:
                 StartWait();
-                break;
+                return;
             case GameState.Playing:
                 TimeCountor();
                 GameManager.I.TimeController();
+
+                if(TouchManager.I.IsTouchStart())
+                {
+                    if (fadeCoroutine != null) { StopCoroutine(fadeCoroutine); }
+                    StartCoroutine(ColorFade(0.1f,true));
+                }
+                else if(TouchManager.I.IsTouchEnd())
+                {
+                    fadeCoroutine = StartCoroutine(ColorFade(0.1f, false));
+                }
                 break;
             case GameState.Result:
                 break;
@@ -209,6 +254,8 @@ public class GameRuleManager : MonoBehaviour
         if (TouchManager.I.IsTouchStart())
         {
             state = GameState.Playing;
+            GameStartObject.SetActive(false);
+            GameStartEffect.SetActive(true);
         }
     }
 }

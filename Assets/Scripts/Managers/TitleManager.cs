@@ -28,6 +28,7 @@ public class TitleManager : MonoBehaviour {
         {
             SoundManager.PlaySE("select");
             SceneManager.LoadSceneAsync("Home");
+            TransitionManager.I.FadeOut(0.5f);
             isNext = true;
         }
 	}

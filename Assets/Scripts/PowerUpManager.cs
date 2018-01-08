@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 /// <summary>
 /// プレイヤーの強化用クラス
@@ -54,9 +55,9 @@ public class PowerUpManager : MonoBehaviour
         def = GameManager.PlayerDEF;
 
         //パラメータを表示に反映する
-        m_atkText.text = "攻撃力：" + atk.ToString();
-        m_speedText.text = "速度：" + speed.ToString();
-        m_defText.text = "耐久力：" + def.ToString();
+        m_atkText.text = "Attack：" + atk.ToString();
+        m_speedText.text = "Speed：" + speed.ToString();
+        m_defText.text = "Hp：" + def.ToString();
 
         m_atkCoin.text = (atk * atkRate).ToString();
         m_speedCoin.text = (speed * speedRate).ToString();
