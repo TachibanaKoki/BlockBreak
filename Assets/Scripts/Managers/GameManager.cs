@@ -51,7 +51,8 @@ public class GameManager : MonoBehaviour
         //常駐させたいクラスを初期化する
         GameObject go = new GameObject();
         go.AddComponent<GameManager>();
-        go.AddComponent<AudioSource>();
+        AudioSource AS =  go.AddComponent<AudioSource>();
+        AS.loop = true;
         go.AddComponent<SoundManager>();
         go.AddComponent<Util>();
 
