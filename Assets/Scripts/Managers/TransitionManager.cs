@@ -22,7 +22,7 @@ public class TransitionManager : MonoBehaviour
     {
 		if(FadeInOnAwake)
         {
-            FadeIn();
+            FadeIn(0.2f);
         }
 	}
 	

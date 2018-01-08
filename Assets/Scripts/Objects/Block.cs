@@ -39,7 +39,10 @@ public class Block : MonoBehaviour
 
     protected void Move()
     {
-        _transform.Translate(m_velocity*Time.deltaTime);
+        if (GameRuleManager.I.state == GameState.Playing)
+        {
+            _transform.Translate(m_velocity * Time.deltaTime);
+        }
     }
 
     public void ObjectActive()
@@ -66,10 +69,11 @@ public class Block : MonoBehaviour
     {
         if(col.transform.tag == "Ball")
         {
-            HP= Mathf.Max(0, HP - col.gameObject.GetComponent<Player>().m_atk);
+            GameManager.I.AddScore((int)Mathf.Min(HP,col.gameObject.GetComponent<Player>().m_atk));
+            HP = Mathf.Max(0, HP - col.gameObject.GetComponent<Player>().m_atk);
         }
 
-        if(col.transform.tag == "EndLine"|| HP <= 0)
+        if(col.transform.tag == "EndLine"||HP<=0)
         {
             ObjectDestroy();
         }

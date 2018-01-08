@@ -71,7 +71,8 @@ public class BlockSpawner : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(Interval);
-            if (GameRuleManager.I.state == GameState.Start) continue;
+            if (GameRuleManager.I.state != GameState.Playing) continue;
+
             spawnCount++;
             level = (spawnCount/3)+1;
             LineSpawn();

@@ -33,6 +33,8 @@ public class GameRuleManager : MonoBehaviour
 
     [SerializeField]
     Text m_scoreText;
+    [SerializeField]
+    Text m_coinText;
 
     [SerializeField]
     Result ResultObject;
@@ -74,6 +76,7 @@ public class GameRuleManager : MonoBehaviour
         Initialize += Init;
         Init();
         m_scoreText.text = "0";
+        m_coinText.text = GameManager.I.coin.ToString();
     }
 
     /// <summary>
@@ -160,6 +163,7 @@ public class GameRuleManager : MonoBehaviour
         }
 
         m_scoreText.text = GameManager.I.Score.ToString();
+        m_coinText.text = GameManager.I.coin.ToString();
     }
 
     /// <summary>
@@ -202,7 +206,7 @@ public class GameRuleManager : MonoBehaviour
     {
         Destroy(gameInstance);
         Initialize();
-        GameManager.I.ScoretoCoin();
+        //GameManager.I.ScoretoCoin();
     }
 
     /// <summary>
@@ -210,7 +214,7 @@ public class GameRuleManager : MonoBehaviour
     /// </summary>
     public void TitleBack()
     {
-        GameManager.I.ScoretoCoin();
+        //GameManager.I.ScoretoCoin();
         UnityEngine.SceneManagement.SceneManager.LoadScene("Title");
     }
 

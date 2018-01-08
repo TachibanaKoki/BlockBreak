@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour
 
     private int BestScore;
 
-    private int coin;
+    public int coin;
 
     [RuntimeInitializeOnLoadMethod]
     private static void RuntimeInitialize()

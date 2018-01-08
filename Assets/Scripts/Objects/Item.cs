@@ -27,7 +27,7 @@ public class Item : Block {
         if (col.transform.tag == "Ball")
         {
             ObjectDestroy();
-            GameManager.I.AddScore();
+            GameManager.I.AddCoin(1);
         }
 
         //防衛ライン
