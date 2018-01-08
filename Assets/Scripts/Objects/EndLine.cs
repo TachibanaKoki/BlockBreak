@@ -23,6 +23,9 @@ public class EndLine : MonoBehaviour {
     [SerializeField]
     Slider m_slider;
 
+    [SerializeField]
+    GlitchFx glitch;
+
 	// Use this for initialization
 	void Start ()
     {
@@ -39,6 +42,7 @@ public class EndLine : MonoBehaviour {
         mat = Model.GetComponent<Renderer>().material;
         startColor = mat.color;
         GameRuleManager.I.Initialize += Init;
+        glitch = Camera.main.GetComponent<GlitchFx>();
 	}
 
     private void Init()
@@ -54,6 +58,24 @@ public class EndLine : MonoBehaviour {
         Util.SetSliderValue(m_slider,HP/MaxHp);
 	}
 
+    IEnumerator GlitchEffect()
+    {
+        float time = 0;
+        while(true)
+        {
+            time += Time.deltaTime;
+
+            glitch.intensity = Mathf.Abs(Mathf.Sin((time*20.0f)*Mathf.PI))*0.5f;
+
+            if (time >= 0.1f)
+            {
+                glitch.intensity = 0;
+                break;
+            }
+            yield return null;
+        }
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         //ひとまず何が当たってもダメージ
@@ -62,7 +84,7 @@ public class EndLine : MonoBehaviour {
             HP -= 1;
 
             Model.transform.DOShakePosition(0.2f, 0.1f, 30).Restart();
-
+            StartCoroutine(GlitchEffect());
             if (HP <= 0)
             {
                 HP = 0;
