@@ -76,6 +76,7 @@ public class GameRuleManager : MonoBehaviour
         Initialize += Init;
         Init();
         m_scoreText.text = "0";
+        GameManager.I.Start();
         m_coinText.text = GameManager.I.coin.ToString();
     }
 

@@ -73,7 +73,7 @@ public class GameManager : MonoBehaviour
     }
 
     // Use this for initialization
-    void Start()
+    public void Start()
     {
         m_score = 0;
     }
